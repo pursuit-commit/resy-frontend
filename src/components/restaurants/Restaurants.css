@@ -1,0 +1,4 @@
+.restaurant-list {
+    display: grid !important;
+    grid-template-columns: auto auto auto;
+}
