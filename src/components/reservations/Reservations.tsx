@@ -1,26 +1,20 @@
-import { useEffect, useState } from "react";
-import { getAllReservations } from "../../services/ReservationService";
-import { Reservation } from "../../util/types";
+import { gql, useQuery } from "@apollo/client";
+import { IReservation } from "../../util/types";
+import QueryResult from "../queryResult/QueryResult";
+import { format, parseISO } from "date-fns";
+import { GET_ALL_RESERVATIONS } from "../../gql/queries";
 
 export default function Reservations() {
-    const [reservations, setReservations] = useState<Reservation[]>([]);
-
-    useEffect(() => {
-        getAllReservations().then(res => {
-            const reservations = res.data.reservations;
-            setReservations(reservations);
-        }).catch(err => {
-            console.error(err);
-        })
-    }, [])
+    const { data, loading, error } = useQuery<{ reservations: IReservation[] }>(GET_ALL_RESERVATIONS);
+    
 
     return (
-        <div>
+        <QueryResult data={data} loading={loading} error={error}>
             {
-                reservations.map(d => (
-                    <span key={d.id}>{d.firstName} {d.lastName}: {d.numGuests} guests</span>
+                data?.reservations.map(d => (
+                    <p key={d.id}>{format(parseISO(d.time), 'MMM do @ h:mm')} reservation for {d.firstName}  at {d.restaurant.name}</p>
                 ))
             }
-        </div>
+        </QueryResult>
     )
 }

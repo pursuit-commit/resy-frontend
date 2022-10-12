@@ -1,11 +1,12 @@
 import { gql, useQuery } from "@apollo/client";
-import { Container } from "@mui/material";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { getRestaurantById } from "../../services/RestaurantService";
-import { Restaurant as RestaurantType } from "../../util/types";
-import { QueryResult } from "../queryResult/QueryResult";
+import { IRestaurant } from "../../util/types";
+import QueryResult from "../queryResult/QueryResult";
+
+interface someting<K, V> {
+    map: Map<K, V>
+}
 
 const GET_RESTAURANT = gql`
 query GetRestaurant($id: UUID!) {
@@ -13,6 +14,9 @@ query GetRestaurant($id: UUID!) {
       __typename
       id
       name
+      description
+      openingTime
+      closingTime
       location
       cuisine
       reservations {
@@ -30,9 +34,7 @@ query GetRestaurant($id: UUID!) {
 export default function Restaurant(): JSX.Element {
     const { restaurantId } = useParams();
 
-    const { data, loading, error } = useQuery<
-        { restaurant: RestaurantType }
-    >(GET_RESTAURANT, {
+    const { data, loading, error } = useQuery<{ restaurant: IRestaurant }>(GET_RESTAURANT, {
         variables: {
             id: restaurantId
         }
@@ -40,7 +42,13 @@ export default function Restaurant(): JSX.Element {
 
     return (
         <QueryResult data={data} loading={loading} error={error}>
-            <span>{data?.restaurant ? data?.restaurant.name : 'Loading...'}</span>
+            <Box sx={{  }}>
+                <h2>{data?.restaurant.name}</h2>
+                <h3>{data?.restaurant.description}</h3>
+                <p>Hours: { data?.restaurant.openingTime } - { data?.restaurant.closingTime }</p>
+                <p>Location: { data?.restaurant.location }</p>
+                <p>Cuisine: { data?.restaurant.cuisine }</p>
+            </Box>
         </QueryResult>
     )
 }

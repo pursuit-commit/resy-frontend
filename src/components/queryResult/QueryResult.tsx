@@ -1,14 +1,14 @@
 import { ApolloError } from "@apollo/client";
 import { Box, CircularProgress } from "@mui/material";
-import es from "date-fns/esm/locale/es/index.js";
+import React from "react";
 
 interface QueryResultProps<T> {
     loading: boolean;
     error: ApolloError | undefined;
     data: T | undefined;
-    children: JSX.Element | undefined;
+    children: JSX.Element | JSX.Element[] | undefined; // React.Child | React.Child[]
 }
-export const QueryResult = <T extends object>({ loading, error, data, children }: QueryResultProps<T>) => {
+const QueryResult = <T extends object>({ loading, error, data, children }: QueryResultProps<T>) => {
     if (error) {
         return <p>ERROR: {error.message}</p>;
     }
@@ -20,8 +20,10 @@ export const QueryResult = <T extends object>({ loading, error, data, children }
         );
     }
     if (data && children) {
-        return children;
+        return <React.Fragment>{children}</React.Fragment>;
     } else {
         return <p>Nothing to show...</p>;
     }
 };
+
+export default QueryResult;

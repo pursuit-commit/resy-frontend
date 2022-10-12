@@ -34,8 +34,7 @@ root.render(
           </Route>
         </Routes>
       </BrowserRouter>
-    </ApolloProvider>,
-
+    </ApolloProvider>
   </React.StrictMode>
 );
 

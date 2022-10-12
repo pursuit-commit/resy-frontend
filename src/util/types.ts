@@ -2,7 +2,7 @@ import { AxiosResponse } from "axios";
 
 export type ApiServiceFunction<T> = () => Promise<AxiosResponse<T>>;
 
-export interface Restaurant {
+export interface IRestaurant {
     id: string;
     name: string;
     description: string;
@@ -13,24 +13,24 @@ export interface Restaurant {
     cuisine: string;
     location: string;
     diningRestriction?: 'Takeout Only' | 'Delivery Only';
-    tables?: TableConfig;
-    reservations?: Reservation[];
+    tables?: ITableConfig;
+    reservations?: IReservation[];
 }
 
-export interface RestaurantSearchFilters {
+export interface IRestaurantSearchFilters {
     diningRestriction?: 'Delivery Only' | 'Takeout Only';
     price?: ('$' | '$$' | '$$$' | '$$$$') | ('$' | '$$' | '$$$' | '$$$$')[];
     cuisine?: string | string[];
     location?: string | string[];
 }
 
-export interface TableConfig {
+export interface ITableConfig {
     twoPersonTables: number;
     fourPersonTables: number;
     eightPersonTables: number;
 }
 
-export interface Reservation {
+export interface IReservation {
     id: string;
     createdAt: string; // timestamp
     firstName: string;
@@ -40,4 +40,5 @@ export interface Reservation {
     time: string; // time of day
     numGuests: number;
     restaurantId: string;
+    restaurant: IRestaurant;
 }

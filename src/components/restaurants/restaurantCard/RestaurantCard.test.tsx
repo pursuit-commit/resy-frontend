@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RestaurantCard from './RestaurantCard';
-import { Restaurant } from '../../../util/types';
+import { IRestaurant } from '../../../util/types';
 
-const defaultRestaurant: Restaurant = {
+const defaultRestaurant: IRestaurant = {
     "id": "0409c661-25f5-466d-b457-de7a315a1fc3",
     "name": "Roberta's Pizza",
     "description": "French restaurant with beautfiul desserts in a cozy setting. This restaurant's french cuisine brings Paris right to your city.",

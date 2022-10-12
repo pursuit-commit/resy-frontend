@@ -1,6 +1,6 @@
 import { Alert, AlertColor, Button, Container, Snackbar, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Restaurant } from "../../util/types";
+import { IRestaurant } from "../../util/types";
 import { MuiTelInput } from 'mui-tel-input'
 import Joi, { ValidationErrorItem } from "joi";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
@@ -8,11 +8,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './NewRestaurant.css';
 import { Box } from "@mui/system";
 import { format, parseISO } from "date-fns";
-import { createRestaurant } from "../../services/RestaurantService";
 import PriceRadioButtons from "./PriceRadioButtons/PriceRadioButtons";
 import { gql, useMutation } from "@apollo/client";
 
-const emptyRestaurantForm: Omit<Restaurant, 'id'> = {
+const emptyRestaurantForm: Omit<IRestaurant, 'id'> = {
     name: '',
     description: '',
     phoneNumber: '',
@@ -33,8 +32,8 @@ const CREATE_RESTAURANT = gql`
 `
 
 
-export default function NewRestaurant() {
-    const [restaurantData, setRestaurantData] = useState<Omit<Restaurant, 'id'>>(emptyRestaurantForm);
+const NewRestaurant: React.FC = () => {
+    const [restaurantData, setRestaurantData] = useState<Omit<IRestaurant, 'id'>>(emptyRestaurantForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
     const [snackbarState, setSnackbarState] = useState<{
         open: boolean,
@@ -59,8 +58,11 @@ export default function NewRestaurant() {
         })
     };
 
-    const handleInputChange: React.ChangeEventHandler = (event) => {
-        const target = event.target as HTMLInputElement;
+
+
+
+    const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        const target = event.target;
 
         setRestaurantData({
             ...restaurantData,
@@ -75,7 +77,7 @@ export default function NewRestaurant() {
         })
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
 
         let restaurantDataWithConvertedTimes;
@@ -94,7 +96,7 @@ export default function NewRestaurant() {
         }
 
         // validate formData 
-        const validationResult: Joi.ValidationResult<Omit<Restaurant, 'id'>> = checkFormValidity(restaurantDataWithConvertedTimes);
+        const validationResult: Joi.ValidationResult<Omit<IRestaurant, 'id'>> = checkFormValidity(restaurantDataWithConvertedTimes);
 
         // call createRestaurant
         if (validationResult.error) {
@@ -129,7 +131,7 @@ export default function NewRestaurant() {
         }
     }
 
-    const checkFormValidity = (restaurantDataWithConvertedTimes: Omit<Restaurant, 'id'>) => {
+    const checkFormValidity = (restaurantDataWithConvertedTimes: Omit<IRestaurant, 'id'>) => {
         // validate object with Joi
 
         const expectedData = Joi.object({
@@ -262,3 +264,5 @@ export default function NewRestaurant() {
 
     )
 }
+
+export default NewRestaurant;
