@@ -22,3 +22,26 @@ query GetReservations {
     }
   }
 `
+
+export const GET_RESTAURANT = gql`
+query GetRestaurant($id: UUID!) {
+    restaurant(id: $id) {
+      __typename
+      id
+      name
+      description
+      openingTime
+      closingTime
+      location
+      cuisine
+      reservations {
+        id
+        firstName
+        lastName
+        numGuests
+        time
+        phoneNumber
+      }
+    }
+  }
+`

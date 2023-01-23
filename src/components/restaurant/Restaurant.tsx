@@ -1,35 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
 import { Box } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { GET_RESTAURANT } from "../../gql/queries";
 import { IRestaurant } from "../../util/types";
 import QueryResult from "../queryResult/QueryResult";
-
-interface someting<K, V> {
-    map: Map<K, V>
-}
-
-const GET_RESTAURANT = gql`
-query GetRestaurant($id: UUID!) {
-    restaurant(id: $id) {
-      __typename
-      id
-      name
-      description
-      openingTime
-      closingTime
-      location
-      cuisine
-      reservations {
-        id
-        firstName
-        lastName
-        numGuests
-        time
-        phoneNumber
-      }
-    }
-  }
-`
 
 export default function Restaurant(): JSX.Element {
     const { restaurantId } = useParams();
