@@ -1,0 +1,7 @@
+.separator {
+    background: #919191;
+    border-radius: 50%;
+    height: 5px;
+    margin: 0 10px;
+    width: 5px;
+}

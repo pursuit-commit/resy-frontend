@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RestaurantCard from './RestaurantCard';
-import { IRestaurant } from '../../../util/types';
+import { IRestaurant, Price } from '../../../util/types';
 
 const defaultRestaurant: IRestaurant = {
     "id": "0409c661-25f5-466d-b457-de7a315a1fc3",
@@ -12,7 +12,7 @@ const defaultRestaurant: IRestaurant = {
     "closingTime": "22:00:00",
     "location": "New York City",
     "cuisine": "Pizza",
-    "price": '$$',
+    "price": Price.p2,
     "tables": {
         "twoPersonTables": 5,
         "fourPersonTables": 5,

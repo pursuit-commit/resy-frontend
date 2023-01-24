@@ -23,7 +23,6 @@ function Restaurants() {
                 </React.Fragment>
             </Container>
             <Outlet />
-
         </QueryResult>
     );
 }

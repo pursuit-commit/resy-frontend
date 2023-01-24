@@ -1,6 +1,6 @@
 import { Alert, AlertColor, Button, Container, Snackbar, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { IRestaurant } from "../../util/types";
+import { IRestaurant, Price } from "../../util/types";
 import { MuiTelInput } from 'mui-tel-input'
 import Joi, { ValidationErrorItem } from "joi";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
@@ -17,7 +17,7 @@ const emptyRestaurantForm: Omit<IRestaurant, 'id'> = {
     phoneNumber: '',
     openingTime: '',
     closingTime: '',
-    price: '$',
+    price: Price.p1,
     cuisine: '',
     location: '',
 }

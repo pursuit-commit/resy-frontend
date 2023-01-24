@@ -2,6 +2,13 @@ import { AxiosResponse } from "axios";
 
 export type ApiServiceFunction<T> = () => Promise<AxiosResponse<T>>;
 
+export enum Price {
+    "p1" = "$",
+    "p2" = "$$",
+    "p3" = "$$$",
+    "p4" = "$$$$"
+}
+
 export interface IRestaurant {
     id: string;
     name: string;
@@ -9,7 +16,7 @@ export interface IRestaurant {
     phoneNumber?: string;
     openingTime: string; // time of day
     closingTime: string; // time of day
-    price: '$' | '$$' | '$$$' | '$$$$';
+    price: Price;
     cuisine: string;
     location: string;
     diningRestriction?: 'Takeout Only' | 'Delivery Only';
@@ -19,7 +26,7 @@ export interface IRestaurant {
 
 export interface IRestaurantSearchFilters {
     diningRestriction?: 'Delivery Only' | 'Takeout Only';
-    price?: ('$' | '$$' | '$$$' | '$$$$') | ('$' | '$$' | '$$$' | '$$$$')[];
+    price?: Price | Price[];
     cuisine?: string | string[];
     location?: string | string[];
 }

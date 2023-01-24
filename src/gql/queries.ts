@@ -12,11 +12,15 @@ export const GET_ALL_RESTAURANTS = gql`
 
 export const GET_ALL_RESERVATIONS = gql`
 query GetReservations {
-    reservations {
-      id
-      firstName
-      time
+  reservations {
+    id
+    firstName
+    lastName
+    numGuests
+    time
+    phoneNumber
       restaurant {
+        id
         name
       }
     }
@@ -34,6 +38,7 @@ query GetRestaurant($id: UUID!) {
       closingTime
       location
       cuisine
+      price
       reservations {
         id
         firstName
