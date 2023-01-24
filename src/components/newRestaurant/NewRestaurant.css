@@ -1,3 +1,13 @@
 .error-message {
     color: #f44336;
 }
+
+.new-form-style {
+    margin: 0 auto;
+    max-width: 500px;
+    padding: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
