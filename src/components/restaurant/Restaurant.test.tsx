@@ -3,5 +3,4 @@ import Restaurant from './Restaurant';
 
 test('renders learn react link', () => {
     render(<Restaurant />);
-
 });
