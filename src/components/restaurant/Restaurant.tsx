@@ -24,6 +24,11 @@ export default function Restaurant(): JSX.Element {
         }
     });
 
+    // add a cache
+    if (data) {
+        console.log(data.restaurant);
+    }
+
     return (
         <QueryResult data={data} loading={loading} error={error}>
             <Container id="container" maxWidth="lg">
