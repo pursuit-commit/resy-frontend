@@ -12,6 +12,8 @@ import { RestaurantHeader } from "./restaurant-header/RestaurantHeader";
 import './Restaurant.css';
 import { NewReservation } from "./new-reservation/NewReservation";
 
+
+// empty change
 export default function Restaurant(): JSX.Element {
     const { restaurantId } = useParams();
     const [showReservationForm, setShowReservationForm] = useState(false);
