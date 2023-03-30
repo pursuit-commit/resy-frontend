@@ -58,9 +58,6 @@ const NewRestaurant: React.FC = () => {
         })
     };
 
-
-
-
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const target = event.target;
 
