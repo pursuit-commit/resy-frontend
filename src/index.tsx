@@ -8,16 +8,12 @@ import Restaurants from './components/restaurants/Restaurants';
 import Reservations from './components/reservations/Reservations';
 import Restaurant from './components/restaurant/Restaurant';
 import NewRestaurant from './components/newRestaurant/NewRestaurant';
-import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
+import { client } from './gql/apollo-client';
 
-const client = new ApolloClient({
-  uri: 'http://localhost:3000/graphql',
-  cache: new InMemoryCache(),
-});
-const root = ReactDOM.createRoot(
+ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
-);
-root.render(
+).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
       <BrowserRouter>

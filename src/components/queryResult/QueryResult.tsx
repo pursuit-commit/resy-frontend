@@ -1,12 +1,12 @@
 import { ApolloError } from "@apollo/client";
 import { Box, CircularProgress } from "@mui/material";
-import React from "react";
+import React, { ReactNode } from "react";
 
 interface QueryResultProps<T> {
     loading: boolean;
     error: ApolloError | undefined;
     data: T | undefined;
-    children: JSX.Element | JSX.Element[] | undefined; // React.Child | React.Child[]
+    children: ReactNode | ReactNode[]
 }
 const QueryResult = <T extends object>({ loading, error, data, children }: QueryResultProps<T>) => {
     if (error) {
@@ -20,7 +20,7 @@ const QueryResult = <T extends object>({ loading, error, data, children }: Query
         );
     }
     if (data && children) {
-        return <React.Fragment>{children}</React.Fragment>;
+        return <>{children}</>;
     } else {
         return <p>Nothing to show...</p>;
     }

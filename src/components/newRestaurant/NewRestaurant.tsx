@@ -7,7 +7,7 @@ import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import './NewRestaurant.css';
 import { Box } from "@mui/system";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import PriceRadioButtons from "./PriceRadioButtons/PriceRadioButtons";
 import { gql, useMutation } from "@apollo/client";
 
@@ -29,8 +29,7 @@ const CREATE_RESTAURANT = gql`
       name
     }
   }
-`
-
+`;
 
 const NewRestaurant: React.FC = () => {
     const [restaurantData, setRestaurantData] = useState<Omit<IRestaurant, 'id'>>(emptyRestaurantForm);
@@ -257,8 +256,6 @@ const NewRestaurant: React.FC = () => {
                 </Alert>
             </Snackbar>
         </Container>
-
-
     )
 }
 

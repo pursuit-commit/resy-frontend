@@ -40,8 +40,7 @@ export interface ITableConfig {
 export interface IReservation {
     id: string;
     createdAt: string; // timestamp
-    firstName: string;
-    lastName: string;
+    name: string;
     phoneNumber: string; // phone number of the primary guest
     email?: string; // email of the primary guest
     time: string; // time of day
@@ -49,3 +48,5 @@ export interface IReservation {
     restaurantId: string;
     restaurant: IRestaurant;
 }
+
+export type ReservationDTO = Omit<IReservation, 'id' | 'createdAt' | 'restaurant'>;
