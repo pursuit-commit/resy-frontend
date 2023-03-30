@@ -5,6 +5,8 @@ import { GET_RESTAURANT } from "../../gql/queries";
 import { IRestaurant } from "../../util/types";
 import QueryResult from "../queryResult/QueryResult";
 
+
+// empty change
 export default function Restaurant(): JSX.Element {
     const { restaurantId } = useParams();
 
