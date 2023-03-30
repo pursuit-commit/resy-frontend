@@ -16,7 +16,7 @@ export default function Restaurant(): JSX.Element {
 
     return (
         <QueryResult data={data} loading={loading} error={error}>
-            <Box sx={{  }}>
+            <Box>
                 <h2>{data?.restaurant.name}</h2>
                 <h3>{data?.restaurant.description}</h3>
                 <p>Hours: { data?.restaurant.openingTime } - { data?.restaurant.closingTime }</p>
