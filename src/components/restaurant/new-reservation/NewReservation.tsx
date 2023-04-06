@@ -14,7 +14,7 @@ const emptyReservationForm: ReservationDTO = {
     phoneNumber: '',
     time: '',
     email: '',
-    numGuests: 0,
+    numGuests: 2,
     restaurantId: '',
 }
 
@@ -26,6 +26,7 @@ interface NewReservationProps {
 export function NewReservation({ restaurantId }: NewReservationProps) {
     const [reservationData, setReservationData] = useState<ReservationDTO>(emptyReservationForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
+    const [successMessage, setSuccessMessage] = useState<string>();
 
     const [createReservation, { loading, error }] = useMutation<
         { newReservation: { id: string, name: string, restaurant: { id: string, name: string } } }
@@ -71,7 +72,7 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
                 },
                 onCompleted: ({ newReservation }) => {
                     const reservationName = newReservation.name;
-                    console.log(`reservation created for ${reservationName} successfully`)
+                    setSuccessMessage(`reservation created for ${reservationName} successfully`)
                     setReservationData(emptyReservationForm);
                 }
             });
@@ -84,7 +85,8 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
         const expectedData = Joi.object({
             name: Joi.string().required(),
             phoneNumber: Joi.string().pattern(/^\+[1-9]{1}[0-9]{3,14}$/).required(),
-            time: Joi.date().iso().required(),
+            // time: Joi.date().iso().required(),
+            time: Joi.string().required(),
             email: Joi.string().email().allow(null, ''),
             numGuests: Joi.number().integer().min(1).max(10).required(),
             restaurantId: Joi.string().guid({ version: 'uuidv4' }).required(),
@@ -92,9 +94,6 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
 
         return expectedData.validate(resData);
     }
-
-    
-
 
     return (
         <Container maxWidth="sm" sx={{ my: '16px' }}>
@@ -115,7 +114,9 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
                     value={reservationData.name}
                     onChange={handleInputChange}
                     fullWidth
-                    margin="dense" />
+                    margin="dense" 
+                    inputProps={{ 'data-testid': 'res-name-form', 'aria-label': 'Reservation Name' }}
+                    />
 
                 <MuiTelInput
                     preferredCountries={['US']}
@@ -124,9 +125,12 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
                     fullWidth
                     required
                     disableFormatting
-                    margin="dense" />
+                    disableDropdown={true}
+                    margin="dense" 
+                    inputProps={{ 'data-testid': 'res-phone-form' }}
+                    />
 
-                <Box sx={{ flexGrow: 0.5 }}>
+                {/* <Box sx={{ flexGrow: 0.5 }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DateTimePicker
                             label="Date&Time picker"
@@ -135,15 +139,53 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
                             renderInput={(params) => <TextField {...params} fullWidth/>}
                         />
                     </LocalizationProvider>
-                </Box>
+                </Box> */}
+
+                <TextField
+                    required
+                    name="time"
+                    label="Date and Time"
+                    variant="outlined"
+                    value={reservationData.time}
+                    onChange={handleInputChange}
+                    fullWidth
+                    margin="dense" 
+                    inputProps={{ 'data-testid': 'res-time-form' }}
+                    />
+
+                <TextField
+                    disabled={!reservationData.time}
+                    name="email"
+                    label="Conditional Form Field"
+                    variant="outlined"
+                    value={reservationData.time ? reservationData.email : ''}
+                    onChange={handleInputChange}
+                    fullWidth
+                    margin="dense" 
+                    inputProps={{ 'data-testid': 'res-email-form' }}
+                    />
 
                 {errors && errors.length ? errors.map(error => (
-                    <div className="error-message" key={error.message}>{error.message}</div>
+                    <div data-testid="error-container">
+                        <div className="error-message" key={error.message}>{error.message}</div>
+                    </div>
                 )) : <span></span>}
 
 
-                <Button type="submit" value="submit" variant="contained" disabled={loading} fullWidth>Create Reservation</Button>
+                <Button 
+                    type="submit" 
+                    value="submit" 
+                    variant="contained" 
+                    disabled={loading} 
+                    fullWidth
+                    data-testid="res-submit-button"
+                    >
+                    Create Reservation
+                </Button>
             </form>
+
+            {successMessage && <div data-testid="success-message">{successMessage}</div>}
+
 
             {/* <Snackbar
                 open={snackbarState.open}
