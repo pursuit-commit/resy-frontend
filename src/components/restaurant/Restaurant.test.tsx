@@ -7,7 +7,6 @@ import React from 'react';
 import { GET_RESTAURANT } from '../../gql/queries';
 import { Button, CircularProgress } from '@mui/material';
 import { InMemoryCache } from '@apollo/client';
-import { act } from 'react-dom/test-utils';
 import { IRestaurant } from '../../util/types';
 const waitForExpect = require("wait-for-expect")
 import { v4 as uuidv4 } from 'uuid';
@@ -57,7 +56,7 @@ describe('Restaurant component', () => {
         wrapper = () => {
             return mount(
                 <MockedProvider mocks={mocks} addTypename={true} cache={new InMemoryCache()}>
-                    <Restaurant />
+                    <Restaurant currentUser={undefined} />
                 </MockedProvider>
             )
         };
@@ -100,9 +99,62 @@ describe('Restaurant component', () => {
     // });
 });
 
-describe('all new fkae tests', () => {
-    it('should render and expect no props?', () => {
-        const componenet = render(<Restaurant />);
-        expect(componenet).toBeTruthy();
+
+// Testing a component that uses a custom hook is a bit tricky but heres an example
+describe('Restaurant component', () => {
+    let wrapper: () => ReactWrapper;
+
+
+    beforeEach(() => {
+        const reactRouter = { useParams };
+        const fakeId = uuidv4();
+        const mocks = [mockWithoutReservations(fakeId)];
+        jest.spyOn(reactRouter, 'useParams').mockReturnValue({ restaurantId: fakeId })
+
+
+        // creating a wrapper so that we dont get mad at useQuery when testing
+        wrapper = () => {
+            return mount(
+                <MockedProvider mocks={mocks} addTypename={true} cache={new InMemoryCache()}>
+                    <Restaurant currentUser={{ name: '', id: '5', username: 'sf'}}/>
+                </MockedProvider>
+            )
+        };
+
     });
+
+    // using the wrapper instead of shallow/mount
+    test('renders Restaurant component', () => {
+        wrapper();
+    });
+
+    // testing that the result of a button click occurs (in this case, the button click makes the NewReservation component appear)
+    test('button click toggles showReservationForm state', async () => {
+        const component = wrapper();
+
+        await waitForExpect(() => {
+            act(() => {
+                component.update();
+                const button = component.find('Button');
+                button.simulate('click');
+                expect(component.find('NewReservation')).toBe(true);
+            }) 
+        });
+
+    });
+
+
+    // Picture a test that you have like this
+    // test('function call toggles abuseType state', () => {
+    //     const component = wrapper(<Restaurant />);
+
+    //     (component as any).callSomeFunction();
+    //     expect(component.state<any>('showReservationForm')).toBe('some value');
+
+    // (component as any).callSomeFunction();
+    // expect(component.state.abuseType).toBe('some other value');
+
+    // (component as any).callSomeFunction();
+    // expect(component.state.abuseType).toBe('some value');
+    // });
 });

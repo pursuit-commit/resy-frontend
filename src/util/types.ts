@@ -9,6 +9,12 @@ export enum Price {
     "p4" = "$$$$"
 }
 
+export interface IUser {
+    id: string;
+    name: string;
+    username: string;
+ };
+
 export interface IRestaurant {
     id: string;
     name: string;

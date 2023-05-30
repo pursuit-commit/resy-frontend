@@ -6,11 +6,10 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Joi, { ValidationErrorItem } from "joi";
 import { MuiTelInput } from "mui-tel-input";
 import { useState } from "react";
-import { MAKE_RESERVATION } from "../../../gql/queries";
-import { ReservationDTO } from "../../../util/types";
+import { MAKE_RESERVATION } from "../../../gql/mutations";
+import { IUser, ReservationDTO } from "../../../util/types";
 
-const emptyReservationForm: ReservationDTO = {
-    name: '',
+const emptyReservationForm: Omit<ReservationDTO, 'name'> = {
     phoneNumber: '',
     time: '',
     email: '',
@@ -20,11 +19,13 @@ const emptyReservationForm: ReservationDTO = {
 
 interface NewReservationProps {
     restaurantId: string;
+    currentUser: IUser | undefined;
 }
 
 // I want a form that 
-export function NewReservation({ restaurantId }: NewReservationProps) {
-    const [reservationData, setReservationData] = useState<ReservationDTO>(emptyReservationForm);
+export function NewReservation({ restaurantId, currentUser }: NewReservationProps) {
+    const initialReservationForm = { name: currentUser ? currentUser.name : '', ...emptyReservationForm };
+    const [reservationData, setReservationData] = useState<ReservationDTO>(initialReservationForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
     const [successMessage, setSuccessMessage] = useState<string>();
 
@@ -73,7 +74,7 @@ export function NewReservation({ restaurantId }: NewReservationProps) {
                 onCompleted: ({ newReservation }) => {
                     const reservationName = newReservation.name;
                     setSuccessMessage(`reservation created for ${reservationName} successfully`)
-                    setReservationData(emptyReservationForm);
+                    setReservationData(initialReservationForm);
                 }
             });
         }

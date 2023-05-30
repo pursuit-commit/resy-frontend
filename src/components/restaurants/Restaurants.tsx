@@ -10,7 +10,7 @@ import './Restaurants.css';
 
 function Restaurants() {
     const { data, loading, error } = useQuery<{ restaurants: IRestaurant[] }>(GET_ALL_RESTAURANTS);
-
+        
     return (
         <QueryResult data={data} error={error} loading={loading}>
             <Container className="restaurant-list">

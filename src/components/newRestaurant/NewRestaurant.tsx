@@ -169,7 +169,9 @@ const NewRestaurant: React.FC = () => {
                     value={restaurantData.name}
                     onChange={handleInputChange}
                     fullWidth
-                    margin="dense" />
+                    margin="dense" 
+                    inputProps={{ "data-testid": 'name-form-input' }}
+                    />
 
                 <TextField
                     required
@@ -181,7 +183,9 @@ const NewRestaurant: React.FC = () => {
                     value={restaurantData.description}
                     onChange={handleInputChange}
                     fullWidth
-                    margin="dense" />
+                    margin="dense"
+                    inputProps={{ "data-testid": 'description-form-input' }}
+                    />
 
                 <MuiTelInput
                     preferredCountries={['US']}
