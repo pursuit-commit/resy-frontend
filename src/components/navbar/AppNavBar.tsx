@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 import LoginDialog from '../login/LoginDialog';
 import { useUserContext } from '../../auth/AuthContext';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { IUser } from '../../util/types';
 
 const pages: {
     name: string,
@@ -29,7 +30,7 @@ const pages: {
     route: '/reservations'
 }];
 
-export default function AppNavBar() {
+export default function AppNavBar({ currentUser, setCurrentUser }: { currentUser: IUser | undefined, setCurrentUser: React.Dispatch<React.SetStateAction<IUser | undefined>> }) {
     const { user, setUserFromToken } = useUserContext();
 
     const [showLogin, setShowLogin] = React.useState<boolean>(false);
@@ -167,7 +168,7 @@ export default function AppNavBar() {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <LoginDialog open={showLogin} toggle={setShowLogin}></LoginDialog>
+            <LoginDialog open={showLogin} toggle={setShowLogin} setCurrentUser={setCurrentUser}></LoginDialog>
         </>
 
     );

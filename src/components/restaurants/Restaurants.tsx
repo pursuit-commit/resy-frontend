@@ -3,12 +3,12 @@ import { Container } from "@mui/material";
 import React from "react";
 import { Outlet } from "react-router-dom";
 import { GET_ALL_RESTAURANTS } from "../../gql/queries";
-import { IRestaurant } from "../../util/types";
+import { IRestaurant, IUser } from "../../util/types";
 import QueryResult from "../queryResult/QueryResult";
 import RestaurantCard from "./restaurantCard/RestaurantCard";
 import './Restaurants.css';
 
-function Restaurants() {
+function Restaurants({ currentUser }: { currentUser: IUser | undefined}) {
     const { data, loading, error } = useQuery<{ restaurants: IRestaurant[] }>(GET_ALL_RESTAURANTS);
         
     return (

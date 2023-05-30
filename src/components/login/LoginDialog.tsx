@@ -4,9 +4,10 @@ import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../gql/mutations';
 import { Button, Dialog, DialogProps, TextField } from '@mui/material';
 import { useUserContext } from '../../auth/AuthContext';
+import { IUser } from '../../util/types';
 
 
-export default function LoginDialog({ open, toggle }: { open: boolean, toggle: Dispatch<SetStateAction<boolean>> }) {
+export default function LoginDialog({ open, toggle, setCurrentUser }: { open: boolean, toggle: Dispatch<SetStateAction<boolean>>, setCurrentUser: Dispatch<SetStateAction<IUser | undefined>> }) {
   const { setUserFromToken } = useUserContext();
   const [username, setUsername] = React.useState<string>('');
   const [password, setPassword] = React.useState<string>('');
@@ -30,6 +31,7 @@ export default function LoginDialog({ open, toggle }: { open: boolean, toggle: D
       onCompleted: ({ login }) => {
         localStorage.setItem('token', login.access_token);
         // setUserFromToken(login.access_token);
+        setCurrentUser({ username: username, name: username } as IUser)
         toggle(false)
       }
     });

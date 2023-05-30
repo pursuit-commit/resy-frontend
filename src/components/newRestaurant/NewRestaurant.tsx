@@ -1,6 +1,6 @@
 import { Alert, AlertColor, Button, Container, Snackbar, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { IRestaurant, Price } from "../../util/types";
+import { IRestaurant, IUser, Price } from "../../util/types";
 import { MuiTelInput } from 'mui-tel-input'
 import Joi, { ValidationErrorItem } from "joi";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
@@ -31,7 +31,7 @@ const CREATE_RESTAURANT = gql`
   }
 `;
 
-const NewRestaurant: React.FC = () => {
+const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
     const [restaurantData, setRestaurantData] = useState<Omit<IRestaurant, 'id'>>(emptyRestaurantForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
     const [snackbarState, setSnackbarState] = useState<{

@@ -3,19 +3,20 @@ import { Box, Container } from "@mui/material";
 import { format, parseISO } from "date-fns";
 import React from "react";
 import { GET_ALL_RESERVATIONS } from "../../../gql/queries";
-import { IReservation } from "../../../util/types";
+import { IReservation, IUser } from "../../../util/types";
 
-export const ReservationList: React.FC<{ restaurantId: string | undefined }> = ({ restaurantId }) => {
+export const ReservationList = ({ restaurantId, currentUser }: { restaurantId: string | undefined, currentUser: IUser | undefined}) => {
     // if no reservations or reservations == undefined, show a no Reservations message
     const { data, loading, error } = useQuery<{ reservations: IReservation[] }>(GET_ALL_RESERVATIONS);
     const reservations = data?.reservations.filter(d => d.restaurant.id === restaurantId);
+    const reservationsByUser = reservations?.filter(d => d.createdBy === currentUser?.id);
 
     return (
         <Container maxWidth="lg" disableGutters>
             <div className="reservation-list-header"></div>
             <h3>Reservations</h3>
             <React.Fragment>{
-                reservations?.map(d => (
+                reservationsByUser?.map(d => (
                     <Box sx={{ borderRadius: 1, border: 1, margin: 1, padding:1 }}>
                         <p style={{ marginTop: '0' }}>{d.name}</p>
                         <div style={{ display: 'flex', alignItems:"center" }}>

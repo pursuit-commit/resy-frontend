@@ -12,13 +12,15 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from './gql/apollo-client';
 import { getDefaultUser } from './auth/defaultUser';
 import { UserAuthProvider } from './auth/AuthContext';
+import { UserProviderComponent } from './auth/UserProviderComponent';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 ).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      {/* <UserAuthProvider user={getDefaultUser()}> */}
+      <UserProviderComponent />
+      {/* <UserAuthProvider user={getDefaultUser()}>
         <BrowserRouter>
           <Routes>
             <Route path="/*" element={<App />}>
@@ -33,7 +35,7 @@ const root = ReactDOM.createRoot(
             </Route>
           </Routes>
         </BrowserRouter>
-    {/* </UserAuthProvider> */}
+    </UserAuthProvider> */}
     </ApolloProvider>
   </React.StrictMode>
 );

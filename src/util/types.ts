@@ -46,6 +46,7 @@ export interface ITableConfig {
 export interface IReservation {
     id: string;
     createdAt: string; // timestamp
+    createdBy?: string; // user id
     name: string;
     phoneNumber: string; // phone number of the primary guest
     email?: string; // email of the primary guest

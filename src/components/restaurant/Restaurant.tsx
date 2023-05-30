@@ -31,7 +31,7 @@ export default function Restaurant({ currentUser }: { currentUser: IUser | undef
                 <div className="sub-heading">Description</div>
                 <p>{data?.restaurant.description || 'No Description'}</p>
                 <div className="content-for-restaurant-hours-info">Hours: {data?.restaurant.openingTime} - {data?.restaurant.closingTime}</div>
-                <ReservationList restaurantId={data?.restaurant.id} />
+                <ReservationList restaurantId={data?.restaurant.id} currentUser={currentUser} />
                 <Button variant="contained" color="primary" className="button" onClick={() => setShowReservationForm(!showReservationForm)}>Make a Reservation</Button>
                 {data && showReservationForm && <NewReservation restaurantId={data.restaurant.id} currentUser={currentUser}/>}
             </Container>
