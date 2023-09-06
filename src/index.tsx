@@ -10,23 +10,20 @@ import Restaurant from './components/restaurant/Restaurant';
 import NewRestaurant from './components/newRestaurant/NewRestaurant';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './gql/apollo-client';
-import { getDefaultUser } from './auth/defaultUser';
-import { UserAuthProvider } from './auth/AuthContext';
-import { UserProviderComponent } from './auth/UserProviderComponent';
+import { UserAuthProvider, getLoggedInUser } from './auth/AuthContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 ).render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <UserProviderComponent />
-      {/* <UserAuthProvider user={getDefaultUser()}>
+      <UserAuthProvider user={getLoggedInUser()}>
         <BrowserRouter>
           <Routes>
             <Route path="/*" element={<App />}>
               <Route path="new-restaurant" element={<NewRestaurant />} />
               <Route path="restaurants" element={<Restaurants />} />
-              <Route path="restaurants/:restaurantId" element={<Restaurant currentUser={getDefaultUser()}/>} />
+              <Route path="restaurants/:restaurantId" element={<Restaurant />} />
               <Route path="reservations" element={<Reservations />} />
               <Route
                 path="*"
@@ -35,7 +32,7 @@ const root = ReactDOM.createRoot(
             </Route>
           </Routes>
         </BrowserRouter>
-    </UserAuthProvider> */}
+      </UserAuthProvider>
     </ApolloProvider>
   </React.StrictMode>
 );

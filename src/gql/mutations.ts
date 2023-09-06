@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
-export const MAKE_RESERVATION = gql`
-  mutation MakeReservation($reservation: JSON!) {
-    makeReservation(reservationData: $reservation) {
+export const NEW_RESERVATION = gql`
+  mutation NewReservation($reservation: JSON!) {
+    newReservation(reservationData: $reservation) {
       id
       name
       restaurant {

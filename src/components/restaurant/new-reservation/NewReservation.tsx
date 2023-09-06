@@ -1,13 +1,12 @@
 import { useMutation } from "@apollo/client";
-import { Typography, TextField, Button, Snackbar, Alert } from "@mui/material";
-import { Box, Container } from "@mui/system";
-import { DateTimePicker, LocalizationProvider, } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { Typography, TextField, Button } from "@mui/material";
+import { Container } from "@mui/system";
 import Joi, { ValidationErrorItem } from "joi";
 import { MuiTelInput } from "mui-tel-input";
 import { useState } from "react";
-import { MAKE_RESERVATION } from "../../../gql/mutations";
-import { IUser, ReservationDTO } from "../../../util/types";
+import { NEW_RESERVATION } from "../../../gql/mutations";
+import { ReservationDTO } from "../../../util/types";
+import { useUserContext } from "../../../auth/AuthContext";
 
 const emptyReservationForm: Omit<ReservationDTO, 'name'> = {
     phoneNumber: '',
@@ -19,19 +18,19 @@ const emptyReservationForm: Omit<ReservationDTO, 'name'> = {
 
 interface NewReservationProps {
     restaurantId: string;
-    currentUser: IUser | undefined;
 }
 
 // I want a form that 
-export function NewReservation({ restaurantId, currentUser }: NewReservationProps) {
-    const initialReservationForm = { name: currentUser ? currentUser.name : '', ...emptyReservationForm };
+export function NewReservation({ restaurantId }: NewReservationProps) {
+    const { user } = useUserContext();
+    const initialReservationForm = { name: user ? user.name : '', ...emptyReservationForm };
     const [reservationData, setReservationData] = useState<ReservationDTO>(initialReservationForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
     const [successMessage, setSuccessMessage] = useState<string>();
-
+    
     const [createReservation, { loading, error }] = useMutation<
         { newReservation: { id: string, name: string, restaurant: { id: string, name: string } } }
-    >(MAKE_RESERVATION);
+    >(NEW_RESERVATION);
 
     const handleInputChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         const target = event.target;
@@ -54,19 +53,21 @@ export function NewReservation({ restaurantId, currentUser }: NewReservationProp
 
         setReservationData({
             ...reservationData,
+            createdBy: user?.id,
             restaurantId
         });
 
-        const validationResult: Joi.ValidationResult<ReservationDTO> = checkFormValidity(reservationData);
-
+        // const validationResult: Joi.ValidationResult<ReservationDTO> = checkFormValidity(reservationData);
+        const validationResult = { error: null };
+        
         if (validationResult.error) {
             // show errors on page
-            setErrors(validationResult.error.details)
+            setErrors(validationResult.error)
         } else {
             setErrors([]);
             createReservation({
                 variables: {
-                    reservationData: reservationData
+                    reservation: reservationData
                 },
                 onError: (error) => {
                     console.error(error)
@@ -97,6 +98,7 @@ export function NewReservation({ restaurantId, currentUser }: NewReservationProp
     }
 
     return (
+        // if user does not have admin role, they can't see this
         <Container maxWidth="sm" sx={{ my: '16px' }}>
             <Typography
                 align="center"
@@ -120,6 +122,8 @@ export function NewReservation({ restaurantId, currentUser }: NewReservationProp
                     />
 
                 <MuiTelInput
+                    name="phoneNumber"
+                    label="Phone Number"
                     preferredCountries={['US']}
                     value={reservationData.phoneNumber || '+1'}
                     onChange={(newValue) => handleChange(newValue, 'phoneNumber')}
@@ -152,18 +156,6 @@ export function NewReservation({ restaurantId, currentUser }: NewReservationProp
                     fullWidth
                     margin="dense" 
                     inputProps={{ 'data-testid': 'res-time-form' }}
-                    />
-
-                <TextField
-                    disabled={!reservationData.time}
-                    name="email"
-                    label="Conditional Form Field"
-                    variant="outlined"
-                    value={reservationData.time ? reservationData.email : ''}
-                    onChange={handleInputChange}
-                    fullWidth
-                    margin="dense" 
-                    inputProps={{ 'data-testid': 'res-email-form' }}
                     />
 
                 {errors && errors.length ? errors.map(error => (

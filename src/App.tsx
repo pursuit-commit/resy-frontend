@@ -1,12 +1,13 @@
 import './App.css';
 import { Outlet } from 'react-router-dom';
 import AppNavBar from './components/navbar/AppNavBar';
-import { IUser } from './util/types';
+import { useState } from 'react';
 
-function App({ currentUser, setCurrentUser }: { currentUser: IUser | undefined, setCurrentUser: React.Dispatch<React.SetStateAction<IUser | undefined>> }) {
+function App() {
+
   return (
     <div>
-      <AppNavBar setCurrentUser={setCurrentUser} currentUser={currentUser} />
+      <AppNavBar />
       <Outlet />
     </div>
   );

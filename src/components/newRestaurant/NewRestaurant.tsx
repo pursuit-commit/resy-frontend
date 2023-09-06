@@ -1,5 +1,5 @@
 import { Alert, AlertColor, Button, Container, Snackbar, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { IRestaurant, IUser, Price } from "../../util/types";
 import { MuiTelInput } from 'mui-tel-input'
 import Joi, { ValidationErrorItem } from "joi";
@@ -10,6 +10,7 @@ import { Box } from "@mui/system";
 import { format } from "date-fns";
 import PriceRadioButtons from "./PriceRadioButtons/PriceRadioButtons";
 import { gql, useMutation } from "@apollo/client";
+import axios from "axios";
 
 const emptyRestaurantForm: Omit<IRestaurant, 'id'> = {
     name: '',
@@ -31,7 +32,7 @@ const CREATE_RESTAURANT = gql`
   }
 `;
 
-const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
+const NewRestaurant = () => {
     const [restaurantData, setRestaurantData] = useState<Omit<IRestaurant, 'id'>>(emptyRestaurantForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
     const [snackbarState, setSnackbarState] = useState<{
@@ -45,10 +46,14 @@ const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
     });
     const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
 
+    const formRef = useRef<HTMLFormElement>(null);
+
+    window.scrollTo(formRef.current!.offsetTop, 0);
+
     const [createRestaurant, { loading, error }] = useMutation<
         { newRestaurant: { id: string, name: string } }
     >(CREATE_RESTAURANT);
-    
+
     const handleSnackbarClose = () => {
         setSnackbarState({
             open: false,
@@ -75,6 +80,13 @@ const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
+
+        const form = formRef.current;
+        if (form) {
+            const formData = new FormData(form);
+            console.log(form.checkValidity())
+            console.log(Array.from(formData.entries()))
+        }
 
         let restaurantDataWithConvertedTimes;
         // convert times to correct format
@@ -160,7 +172,7 @@ const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
             >
                 New Restaurant
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} ref={formRef}>
                 <TextField
                     required
                     name="name"
@@ -169,9 +181,9 @@ const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
                     value={restaurantData.name}
                     onChange={handleInputChange}
                     fullWidth
-                    margin="dense" 
+                    margin="dense"
                     inputProps={{ "data-testid": 'name-form-input' }}
-                    />
+                />
 
                 <TextField
                     required
@@ -185,7 +197,7 @@ const NewRestaurant = ({ currentUser }: { currentUser: IUser | undefined}) => {
                     fullWidth
                     margin="dense"
                     inputProps={{ "data-testid": 'description-form-input' }}
-                    />
+                />
 
                 <MuiTelInput
                     preferredCountries={['US']}

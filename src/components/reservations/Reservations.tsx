@@ -3,9 +3,9 @@ import { IReservation, IUser } from "../../util/types";
 import QueryResult from "../queryResult/QueryResult";
 import { format, parseISO } from "date-fns";
 import { GET_ALL_RESERVATIONS } from "../../gql/queries";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
-export default function Reservations({ currentUser }: { currentUser: IUser | undefined}) {
+export default function Reservations() {
     const { data, loading, error } = useQuery<{ reservations: IReservation[] }>(GET_ALL_RESERVATIONS);
 
     return (

@@ -30,7 +30,7 @@ const pages: {
     route: '/reservations'
 }];
 
-export default function AppNavBar({ currentUser, setCurrentUser }: { currentUser: IUser | undefined, setCurrentUser: React.Dispatch<React.SetStateAction<IUser | undefined>> }) {
+export default function AppNavBar() {
     const { user, setUserFromToken } = useUserContext();
 
     const [showLogin, setShowLogin] = React.useState<boolean>(false);
@@ -168,7 +168,7 @@ export default function AppNavBar({ currentUser, setCurrentUser }: { currentUser
                     </Toolbar>
                 </Container>
             </AppBar>
-            <LoginDialog open={showLogin} toggle={setShowLogin} setCurrentUser={setCurrentUser}></LoginDialog>
+            <LoginDialog open={showLogin} toggle={setShowLogin}></LoginDialog>
         </>
 
     );

@@ -6,7 +6,7 @@ import { MockedProvider, MockedResponse } from '@apollo/client/testing';
 import { DocumentNode, GraphQLError } from 'graphql';
 import { IReservation } from '../../../util/types';
 import { InMemoryCache } from '@apollo/client';
-import { MAKE_RESERVATION } from '../../../gql/mutations';
+import { NEW_RESERVATION } from '../../../gql/mutations';
 
 const defaultMocks: {
   request: {
@@ -22,7 +22,7 @@ const defaultMocks: {
   };
 }[] = [{
   request: {
-    query: MAKE_RESERVATION,
+    query: NEW_RESERVATION,
     variables: {
       reservation: {
         name: "Restaurant Goer",
@@ -57,7 +57,7 @@ describe('NewReservation Component', () => {
     wrapper = (mocks) => {
       return render(
         <MockedProvider mocks={mocks} addTypename={true} cache={new InMemoryCache()}>
-          <NewReservation restaurantId={restaurantId} currentUser={{ name: '', username: '', id: ''}}/>
+          <NewReservation restaurantId={restaurantId} />
         </MockedProvider>
       )
     };
@@ -108,7 +108,7 @@ describe('NewReservation Component', () => {
     // ARRANGE
     const failureMocks = [{
       request: {
-        query: MAKE_RESERVATION,
+        query: NEW_RESERVATION,
         variables: {
           reservation: {
             name: "Restaurant Goer",

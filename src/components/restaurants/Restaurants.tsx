@@ -8,7 +8,8 @@ import QueryResult from "../queryResult/QueryResult";
 import RestaurantCard from "./restaurantCard/RestaurantCard";
 import './Restaurants.css';
 
-function Restaurants({ currentUser }: { currentUser: IUser | undefined}) {
+function Restaurants() {
+    // technically this is using the GraphQL api and not the REST version but the pattern is the same
     const { data, loading, error } = useQuery<{ restaurants: IRestaurant[] }>(GET_ALL_RESTAURANTS);
         
     return (

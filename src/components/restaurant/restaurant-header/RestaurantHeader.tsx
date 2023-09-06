@@ -1,10 +1,12 @@
 import './RestaurantHeader.css';
-import { Price } from '../../../util/types';
+import { IRestaurant, Price } from '../../../util/types';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 type PriceKeys = keyof typeof Price;
 
-export const RestaurantHeader: React.FC<any> = (props) => {
-    const { restaurant } = props; // change later
+interface RestaurantHeaderProps {
+    restaurant: IRestaurant;
+}
+export const RestaurantHeader: React.FC<RestaurantHeaderProps> = ({ restaurant }) => {
 
     return (
         <div className='header-container'>

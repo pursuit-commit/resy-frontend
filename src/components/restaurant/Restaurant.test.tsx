@@ -57,7 +57,7 @@ describe('Restaurant component', () => {
         wrapper = () => {
             return mount(
                 <MockedProvider mocks={mocks} addTypename={true} cache={new InMemoryCache()}>
-                    <Restaurant currentUser={undefined} />
+                    <Restaurant />
                 </MockedProvider>
             )
         };
@@ -117,7 +117,7 @@ describe('Restaurant component', () => {
         wrapper = () => {
             return mount(
                 <MockedProvider mocks={mocks} addTypename={true} cache={new InMemoryCache()}>
-                    <Restaurant currentUser={{ name: '', id: '5', username: 'sf'}}/>
+                    <Restaurant />
                 </MockedProvider>
             )
         };

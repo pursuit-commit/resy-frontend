@@ -1,16 +1,16 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import './LoginDialog.css';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../../gql/mutations';
 import { Button, Dialog, DialogProps, TextField } from '@mui/material';
-import { useUserContext } from '../../auth/AuthContext';
-import { IUser } from '../../util/types';
+import {  useUserContext } from '../../auth/AuthContext';
 
 
-export default function LoginDialog({ open, toggle, setCurrentUser }: { open: boolean, toggle: Dispatch<SetStateAction<boolean>>, setCurrentUser: Dispatch<SetStateAction<IUser | undefined>> }) {
+export default function LoginDialog({ open, toggle }: { open: boolean, toggle: Dispatch<SetStateAction<boolean>> }) {
   const { setUserFromToken } = useUserContext();
-  const [username, setUsername] = React.useState<string>('');
-  const [password, setPassword] = React.useState<string>('');
+
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
 
   const [login, { loading, error }] = useMutation<
     { login: { access_token: string } }
@@ -28,10 +28,8 @@ export default function LoginDialog({ open, toggle, setCurrentUser }: { open: bo
       onError: (error) => {
         console.error(error)
       },
-      onCompleted: ({ login }) => {
-        localStorage.setItem('token', login.access_token);
-        // setUserFromToken(login.access_token);
-        setCurrentUser({ username: username, name: username } as IUser)
+      onCompleted: ({ login: { access_token } }) => {
+        setUserFromToken(access_token);
         toggle(false)
       }
     });
@@ -58,6 +56,7 @@ export default function LoginDialog({ open, toggle, setCurrentUser }: { open: bo
             name="password"
             label="Password"
             variant="outlined"
+            type='password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             fullWidth
