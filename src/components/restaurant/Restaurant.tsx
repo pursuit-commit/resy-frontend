@@ -16,7 +16,7 @@ import { useUserContext } from "../../auth/AuthContext";
 interface RestaurantProps {
     restaurantId: string;
 } 
-
+// some
 export default function Restaurant({ restaurantId }: RestaurantProps) {
     // const { user } = useUserContext();
     // const { restaurantId } = useParams();
