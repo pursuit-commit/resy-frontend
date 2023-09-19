@@ -13,13 +13,13 @@ interface RestaurantCardProps {
 }
 
 export const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant }) => {
-    const imageUrl = `../../../media/images/restaurant-${Math.floor(Math.random() * 5 + 1)}.jpg`;
+    const randomImage = require(`../../../media/images/restaurant-${Math.floor(Math.random() * 5 + 1)}.jpg`);
     return (
         <Card className="restaurant-card" sx={{ maxWidth: 345 }}>
             <CardMedia
                 component="img"
                 height="140"
-                image={require(imageUrl)}
+                image={randomImage}
                 alt="restaurant"
             />
             <CardContent>

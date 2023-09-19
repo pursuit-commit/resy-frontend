@@ -22,7 +22,7 @@ export interface IRestaurant {
     phoneNumber?: string;
     openingTime: string; // time of day
     closingTime: string; // time of day
-    price: Price;
+    price:  keyof typeof Price;
     cuisine: string;
     location: string;
     diningRestriction?: 'Takeout Only' | 'Delivery Only';

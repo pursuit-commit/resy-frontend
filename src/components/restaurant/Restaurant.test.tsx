@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { useParams } from 'react-router-dom';
 import { act } from 'react-dom/test-utils';
+import { getMockRestaurant, mockRestaurant } from '../../util/mocks';
 
 configure({ adapter: new Adapter() });
 
@@ -25,21 +26,10 @@ const mockWithoutReservations = (id: string) => ({
     },
     result: {
         data: {
-            restaurant: {
-                id,
-                name: "Fake Restaurant",
-                description: "Fake Description",
-                openingTime: "10:00",
-                closingTime: "22:00",
-                location: 'some location',
-                cuisine: 'Some',
-                price: '$',
-                reservations: [],
-            } as IRestaurant
+            restaurant: getMockRestaurant({ id })
         }
     }
 });
-
 
 // Testing a component that uses a custom hook is a bit tricky but heres an example
 describe('Restaurant component', () => {
@@ -51,7 +41,6 @@ describe('Restaurant component', () => {
         const fakeId = uuidv4();
         const mocks = [mockWithoutReservations(fakeId)];
         jest.spyOn(reactRouter, 'useParams').mockReturnValue({ restaurantId: fakeId })
-
 
         // creating a wrapper so that we dont get mad at useQuery when testing
         wrapper = () => {

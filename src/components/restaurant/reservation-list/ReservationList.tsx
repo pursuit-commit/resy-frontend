@@ -6,8 +6,6 @@ import { UserAuthContext, useUserContext } from "../../../auth/AuthContext";
 import { useContextSelector } from "use-context-selector";
 
 export const ReservationList = memo(({ reservations }: { reservations: IReservation[] | undefined }) => {
-    console.log('rendering list');
-
     // const [user, setUser] = useContext(UserAuthContext);
 
     // const username = useContextSelector(UserAuthContext, ([user, _]) => user?.name);

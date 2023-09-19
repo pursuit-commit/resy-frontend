@@ -10,15 +10,14 @@ import { Box } from "@mui/system";
 import { format } from "date-fns";
 import PriceRadioButtons from "./PriceRadioButtons/PriceRadioButtons";
 import { gql, useMutation } from "@apollo/client";
-import axios from "axios";
 
-const emptyRestaurantForm: Omit<IRestaurant, 'id'> = {
+const emptyRestaurantForm: any = {
     name: '',
     description: '',
     phoneNumber: '',
     openingTime: '',
     closingTime: '',
-    price: Price.p1,
+    price: '$',
     cuisine: '',
     location: '',
 }
@@ -33,7 +32,7 @@ const CREATE_RESTAURANT = gql`
 `;
 
 const NewRestaurant = () => {
-    const [restaurantData, setRestaurantData] = useState<Omit<IRestaurant, 'id'>>(emptyRestaurantForm);
+    const [restaurantData, setRestaurantData] = useState<any>(emptyRestaurantForm);
     const [errors, setErrors] = useState<ValidationErrorItem[]>([]);
     const [snackbarState, setSnackbarState] = useState<{
         open: boolean,
@@ -45,10 +44,6 @@ const NewRestaurant = () => {
         severity: 'success'
     });
     const [submitDisabled, setSubmitDisabled] = useState<boolean>(false);
-
-    const formRef = useRef<HTMLFormElement>(null);
-
-    window.scrollTo(formRef.current!.offsetTop, 0);
 
     const [createRestaurant, { loading, error }] = useMutation<
         { newRestaurant: { id: string, name: string } }
@@ -80,13 +75,6 @@ const NewRestaurant = () => {
 
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-
-        const form = formRef.current;
-        if (form) {
-            const formData = new FormData(form);
-            console.log(form.checkValidity())
-            console.log(Array.from(formData.entries()))
-        }
 
         let restaurantDataWithConvertedTimes;
         // convert times to correct format
@@ -172,7 +160,7 @@ const NewRestaurant = () => {
             >
                 New Restaurant
             </Typography>
-            <form onSubmit={handleSubmit} ref={formRef}>
+            <form onSubmit={handleSubmit}>
                 <TextField
                     required
                     name="name"
